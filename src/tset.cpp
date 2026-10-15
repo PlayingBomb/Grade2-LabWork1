@@ -80,7 +80,6 @@ TSet TSet::operator+(const TSet &s) // объединение
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-    //хз нужно ли тут проверять на out of bounds
     TSet result_set(*this);
     result_set.InsElem(Elem);
     return result_set;
@@ -88,7 +87,6 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-    //хз нужно ли тут проверять на out of bounds
     TSet result_set(*this);
     result_set.DelElem(Elem);
     return result_set;
@@ -113,7 +111,6 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    //хз нужно ли тут проверять на out of bounds
     int Elem;
     while (istr >> Elem)
         s.InsElem(Elem);
