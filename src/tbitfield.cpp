@@ -46,7 +46,7 @@ TELEM TBitField::GetMemMask(const int n) const // битовая маска дл
 	if ((n < 0) || (n >= BitLen)) {
 		throw std::out_of_range("incorrect number");
 	}
-	return (1 << (n % (sizeof(TELEM) * 8))); //маска в пределах байта
+	return (static_cast<TELEM>(1) << (n % (sizeof(TELEM) * 8))); //маска в пределах байта
 }
 
 // доступ к битам битового поля
@@ -160,6 +160,12 @@ TBitField TBitField::operator~(void) // отрицание
 	for (int i = 0;i < MemLen; i++)
 		result_field.pMem[i] = ~pMem[i];
 
+	unsigned int lastElemBits = BitLen % (sizeof(TELEM) * 8);
+	if (lastElemBits != 0){
+		TELEM mask = (static_cast<TELEM>(1) << lastElemBits)-1;
+		result_field.pMem[MemLen - 1] &= mask;
+	}
+
 	return result_field;
 }
 
@@ -171,9 +177,9 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 	for (int i = 0; i < bf.BitLen; i++) {
 		istr >> digit;
 		if (digit == '0')
-			bf.SetBit(i);
-		else if (digit == '1')
 			bf.ClrBit(i);
+		else if (digit == '1')
+			bf.SetBit(i);
 		else
 			break;
 	}
